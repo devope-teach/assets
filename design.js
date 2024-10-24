@@ -17,3 +17,30 @@ window.addEventListener('load', () => {
     $title.innerText = h1Text;
     document.head.appendChild($title);
 });
+
+
+class LogMirror {
+    constructor(targetSelector) {
+        this.$target = document.querySelector(targetSelector);
+
+        this.original = console.log;
+        this.init();
+    }
+
+    init() {
+        const that = this;
+        console.log = function (message) {
+            that.original(message);
+            that.print(message);
+        };
+    }
+
+    print(message) {
+        this.$target.innerText += message + '\n';
+    }
+}
+
+const $log = document.createElement('div');
+$log.id = 'log';
+document.body.append($log);
+new LogMirror('#log');
